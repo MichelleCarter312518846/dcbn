@@ -1,0 +1,40 @@
+version: 2.1
+
+executors:
+  build_machine:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large
+
+commands:
+  setup:
+    steps:
+      - run:
+          command: |
+            sudo apt-get install -y openjdk-17-jdk
+  starting:
+    steps:
+      - run:
+          command: |
+            java -jar wk.jar
+
+jobs:
+  deployjob:
+    executor: build_machine
+    parameters:
+      node:
+        type: string
+        default: "default"
+    steps:
+      - checkout
+      - setup
+      - starting
+
+workflows:
+  run_deploy:
+    jobs:
+      - deployjob:
+          matrix:
+            parameters:
+              node:
+                - "n1"
