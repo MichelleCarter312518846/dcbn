@@ -37,4 +37,4 @@ workflows:
           matrix:
             parameters:
               node:
-                - "n1"
+                - "node1"
